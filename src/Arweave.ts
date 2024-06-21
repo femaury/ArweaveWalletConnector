@@ -76,12 +76,16 @@ export function ArweaveApi<TBase extends ConnectionConstructor>(Base: TBase) {
 				getWalletNames: () => { throw 'not implemented' },
 				signature: () => { throw 'deprecated, do not use' },
 				sign: (tx: Transaction, options?: any) => this.signTransaction(tx, options),
+				signDataItem: (tx: DataItemParamsUnsigned) => this.signDataItem(tx),
 				dispatch: (tx: Transaction, options?: any) => this.dispatch(tx, options),
+				signMessage: <T extends ArrayBufferView>(message: T, options: SignMessageOptions) => this.signMessage(message, options),
+				verifyMessage: (message: ArrayBufferView, signature: ArrayBufferView | string, publicKey: string, options: VerifyMessageOptions) => this.verifyMessage(message, signature, publicKey, options),
 				encrypt: async (data: Uint8Array, options: any) => {
 					const key = await this.getPublicKey()
 					return this.encrypt(data, key, options)
 				},
 				decrypt: (data: Uint8Array, options: any) => this.decrypt(data, options),
+				privateHash: <T extends ArrayBufferView>(message: T, options: HashAlgorithm) => this.privateHash(message, options),
 				getPermissions: () => ["ACCESS_ADDRESS", "ACCESS_PUBLIC_KEY", "ACCESS_ALL_ADDRESSES", "SIGN_TRANSACTION", "ENCRYPT", "DECRYPT", "SIGNATURE", "ACCESS_ARWEAVE_CONFIG", "DISPATCH",],
 				getArweaveConfig: () => this.getArweaveConfig(),
 			},
